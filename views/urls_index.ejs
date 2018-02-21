@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <style>
+      body { 
+          background-color: black;
+          color: white;
+          margin: 120px 
+      } 
+      </style>
+</head>
+<body>
+  <header>
+      <% include partials/_header %>
+  </header>
+     file: urls_index.ejs
+      
+       <% for (key in urls) { %>
+        <li><%= key %> : <%=urls[key]%></li>
+       <% } %>
+
+       <button>Shortening a new URL</button>
+</body>
+</html>
