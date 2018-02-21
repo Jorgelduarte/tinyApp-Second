@@ -1,22 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+    <head>
+            <link rel="stylesheet" href="styles.css">
         <style>
-                body { 
-                background-color: black;
-                color: white;
-                margin: 120px 
-                } 
+            body { 
+                margin: 120px;
+                font-size: 20px;
+            } 
         </style>
-</head>
-<body>
+    </head>
+    <body>
         <header>
                 <% include partials/_header %>
         </header>
-     file: urls_show.ejs
-    
-      <li><%=shortURL%> : <%=longURL%></li> 
 
-      
-</body>
+                file: urls_show.ejs
+        <ul>
+            <li> ShortURL: <%=shortURL%> </li> 
+        </ul>
+        <form method="POST" style="display: inline;" action="/urls/<%=shortURL%>">
+            <input type="text" name="longURL" style="width: 200px" value = <%=longURL%>>
+            <button type="submit">Update</button>
+        </form>
+    </body>
 </html>

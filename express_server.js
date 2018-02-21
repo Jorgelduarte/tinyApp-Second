@@ -51,7 +51,13 @@ app.get("/u/:shortURL", (req, res) => {
   res.redirect(longURL);
 });
 
-
+// Edit URls
+app.post("/urls/:id", (req, res) => {
+  let updateUrl = req.body.longURL;
+  let ShortUrl = req.params.id
+  urlDatabase[ShortUrl] = updateUrl;
+  res.redirect("/urls");
+});
 
 app.get("/urls/:id", (req, res) => {
   let templateVars = {
