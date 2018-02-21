@@ -1,3 +1,25 @@
 <title>TinyApp</title>
 
 <h1><u>Tiny App</u></h1>
+
+
+
+
+<% if(username){ %>
+    <div>
+            Username: <%= username %>
+            <form method="POST" style="display: inline;" action="/logout">
+                <button type="submit">Logout</button>
+            </form>
+    </div> 
+
+  <% } else{ %>  
+
+    <form method="POST" style="display: inline;" action="/login">
+        <input type="text" name="username" style="width: 200px">
+        <button type="submit">Login</button>
+    </form>
+
+ <% } %>
+
+<div>-------------------------------------------------------------------------------------</div>
