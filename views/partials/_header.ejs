@@ -3,22 +3,23 @@
 <h1><u>Tiny App</u></h1>
 
 
-
-
-<% if(username){ %>
+<% if(user){ %>
     <div>
-            Username: <%= username %>
-            <form method="POST" style="display: inline;" action="/logout">
-                <button type="submit">Logout</button>
-            </form>
+        Username: <%= user.email %>
+        <form method="POST" style="display: inline;" action="/logout">
+            <button type="submit">Logout</button>
+        </form>
     </div> 
 
   <% } else{ %>  
-
-    <form method="POST" style="display: inline;" action="/login">
-        <input type="text" name="username" style="width: 200px">
-        <button type="submit">Login</button>
-    </form>
+    <a href="/login">Login</a>
+    <a href="/register">Register </a>
+    <!-- <form method="GEt" style="display: inline;" action="/login">
+        <button type="button">Login</button>
+    </form> -->
+    <!-- <form method="GET" style="display: inline;" action="/register">
+        <button type="submit">Register</button>
+    </form> -->
 
  <% } %>
 
