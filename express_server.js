@@ -1,6 +1,6 @@
 var express = require("express");
 var app = express();
-var PORT = process.env.PORT || 8080; // default port 8080
+var PORT = process.env.PORT || 8080;
 var cookieSession = require('cookie-session')
 const bcrypt = require('bcrypt');
 
@@ -17,13 +17,11 @@ app.use(bodyParser.urlencoded({extended: true}));
 function generateRandomString() {
   var text = "";
   var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-  for (var i = 0; i < 6; i++)
+  for (var i = 0; i < 6; i++) {
     text += possible.charAt(Math.floor(Math.random() * possible.length));
-
+  }
   return text;
 }
-
 
 // users on database
 const users = { 
@@ -57,8 +55,7 @@ var urlDatabase = {
 };
 
 
-// We suggest creating a function named urlsForUser(id) which returns 
-// the subset of the URL database that belongs to the user with ID id, so that your endpoint code remains clean.
+// The subset of the URL database that belongs to the user
   function urlsForUser(id) {
     var newListUrl = {};
     for (key in urlDatabase) {
@@ -74,23 +71,21 @@ var urlDatabase = {
   }
 
 
-
 app.get("/", (req, res) => {
   res.redirect("urls");
 });
 
-// main page
+// Main page - If logged render to Urls. If not, render to login page
 app.get("/urls", (req, res) => {
-if (users[req.session.user_id]){
-  let templateVars = {
-    urls: urlsForUser(users[req.session.user_id].id),
-    user: users[req.session.user_id]
-  };
-  res.render("urls_index", templateVars);
-} else {
-  res.render("login");
-}
-
+  if (users[req.session.user_id]){
+    let templateVars = {
+      urls: urlsForUser(users[req.session.user_id].id),
+      user: users[req.session.user_id]
+    };
+    res.render("urls_index", templateVars);
+  } else {
+    res.render("login");
+  }
 });
 
 // Create a new URL if the user is logged. If not, redirect to login page
@@ -99,7 +94,7 @@ app.get("/urls/new", (req, res) => {
     user: users[req.session.user_id]
   };
   if  (templateVars.user){
-  res.render("urls_new", templateVars);
+    res.render("urls_new", templateVars);
   } else {
     res.redirect("/login");
   }
@@ -112,14 +107,15 @@ app.get("/register", (req, res) => {
 
 //New user- Check if the email or password is empty. After, if the email exist in database
 // If one of them is false, status 400. Otherwise, create the user in database, set cookies and redirect.
+// *** I preferred not to elaborate a function so that I could fully understand all the steps ***
 app.post("/register", (req, res) => {
   let email = req.body.email;
   let password = req.body.password;
   let userID = generateRandomString();
+  let emptyFields = false;
+  let emailExists = false;
 
-  var emptyFields = false;
-  var emailExists = false;
-  for (key in users) {
+  for (let key in users) {
     let existingEmail = users[key].email
     if ((!email) || (!password)) {
       emptyFields = true;
@@ -128,14 +124,13 @@ app.post("/register", (req, res) => {
     } 
   }
   
-  if(emptyFields){
+  if(emptyFields) {
     res.status(400);
     res.send('Password or email empty');
   } else if (emailExists){
-    res.status(400);
-    res.send('Email already exist');
+      res.status(400);
+      res.send('Email already exist');
   } else {
-
 
     const hashedPassword = bcrypt.hashSync(req.body.password, 10);
 
@@ -159,9 +154,9 @@ app.post("/urls", (req, res) => {
     userID: users[req.session.user_id].id,
     longURL: newUrl
   }
-  console.log(urlDatabase);
   res.redirect("/urls");
 });
+
 
 app.get("/u/:shortURL", (req, res) => {
   let longURL = urlDatabase[req.params.shortURL];
@@ -174,9 +169,9 @@ app.get("/login", (req, res) => {
 });
 
 
-
 // Login Page - Check if the email exist in database and the password match.
 // If one of them is false, status 403. Otherwise, set cookies and redirect.
+// *** I preferred not to elaborate a function so that I could fully understand all the steps ***
 app.post("/login", (req, res) => {
   let user = "";
   let passwordMatch = false;
@@ -217,23 +212,20 @@ app.get("/urls/:id", (req, res) => {
   let userLogged = users[req.session.user_id];
   let ownUrl = urlDatabase[req.params.id];
 
-  if(!userLogged){
+  if(!userLogged) {
     res.status(403);
     res.send('user is not logged');
   } else if (ownUrl.userID !== userLogged.id) {
     res.status(403);
     res.send('URL is not yours');
   } else {
-
-  let templateVars = {
-    shortURL: req.params.id,
-    longURL: urlDatabase[req.params.id],
-    user: users[req.session.user_id]
-  };
-  res.render("urls_show", templateVars);
-  // res.end('ok');
-}
-  
+    let templateVars = {
+      shortURL: req.params.id,
+      longURL: urlDatabase[req.params.id],
+      user: users[req.session.user_id]
+    };
+    res.render("urls_show", templateVars);
+  }
 });
 
 //Deleting URLs
