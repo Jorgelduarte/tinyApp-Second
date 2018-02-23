@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-            <link rel="stylesheet" href="styles.css">
         <style>
             body { 
                 margin: 120px;
@@ -19,7 +18,7 @@
             <li> ShortURL: <%=shortURL%> </li> 
         </ul>
         <form method="POST" style="display: inline;" action="/urls/<%=shortURL%>">
-            <input type="text" name="longURL" style="width: 200px" value = <%=longURL%>>
+            <input type="text" name="longURL" style="width: 200px">
             <button type="submit">Update</button>
         </form>
     </body>

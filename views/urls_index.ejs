@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-            
-            <link rel="stylesheet" href="styles.css">
         <style>
             body { 
                 margin: 120px;
@@ -17,18 +15,25 @@
         
         file: urls_index.ejs
 
+        <% if(user){ %>
+            <div>
+                <a href=http://localhost:8080/urls/new >Create a new URL</a>
+            </div>
+          <% } else{ %>  
+         <% } %>
+
         <% for (key in urls) { %>
         <ul>
-            <li><%= key %> : <%=urls[key]%>
+            <li>
+                <%= key %> : <%=urls[key].longURL %>
+            
                 <form style="display: inline;" method="POST" action="/urls/<%= key %>/delete">
-                    <button type="submit" >Delete 🗑 </button>
+                    <button type="submit"> Delete 🗑 </button>
                 </form>
-                <a href="/urls/<%= key %>" > edit </a>
+                <a href="/urls/<%= key %>">  edit </a>
             </li>
         </ul>
         <% } %>
-        <div>
-            <a href=http://localhost:8080/urls/new >Shortening a new URL</an>
-        </div>
+        
     </body>
 </html>
